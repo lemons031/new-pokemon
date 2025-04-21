@@ -10,7 +10,7 @@ const App = () => {
   return (
     <div>
       <h1>Pokémon Card Price Checker</h1>
-      <ImageUpload setOcrData={setOcrData} />
+      <ImageUpload setData={setOcrData} />
       {ocrData && <OCRResult data={ocrData} setPriceData={setPriceData} />}
       {priceData && <PriceResult data={priceData} />}
     </div>

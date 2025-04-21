@@ -9,7 +9,10 @@ const ImageUpload = ({ setData }) => {
   };
 
   const handleUpload = async () => {
-    if (!file) return;
+    if (!file) {
+      console.error('No file selected');
+      return;
+    }
 
     const formData = new FormData();
     formData.append('file', file);
@@ -20,9 +23,14 @@ const ImageUpload = ({ setData }) => {
           'Content-Type': 'multipart/form-data',
         },
       });
+      console.log('Upload successful:', response.data);
       setData(response.data);
     } catch (error) {
       console.error('Error uploading file:', error);
+      if (error.response) {
+        console.error('Server responded with:', error.response.data);
+      }
+      alert('Upload failed. Please try again.');
     }
   };
 

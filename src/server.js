@@ -3,11 +3,13 @@ import multer from 'multer';
 import axios from 'axios';
 import { createReadStream } from 'fs';
 import { VisionServiceClient } from '@google-cloud/vision';
+import cors from 'cors'; // Import CORS
 
 const app = express();
 const upload = multer({ dest: 'uploads/' });
 const visionClient = new VisionServiceClient();
 
+app.use(cors()); // Enable CORS
 app.use(express.json());
 app.use(express.static('public'));
 
