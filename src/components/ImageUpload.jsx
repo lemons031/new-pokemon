@@ -1,18 +1,11 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 
-const ImageUpload = ({ setOcrData }) => {
+const ImageUpload = ({ setData }) => {
   const [file, setFile] = useState(null);
-  const [error, setError] = useState('');
 
-  const handleFileChange = (e) => {
-    const selectedFile = e.target.files[0];
-    if (selectedFile && (selectedFile.type === 'image/jpeg' || selectedFile.type === 'image/png')) {
-      setFile(selectedFile);
-      setError('');
-    } else {
-      setError('Please upload a valid image (JPEG or PNG).');
-    }
+  const handleFileChange = (event) => {
+    setFile(event.target.files[0]);
   };
 
   const handleUpload = async () => {
@@ -22,18 +15,21 @@ const ImageUpload = ({ setOcrData }) => {
     formData.append('file', file);
 
     try {
-      const response = await axios.post('/api/ocr', formData);
-      setOcrData(response.data);
-    } catch (err) {
-      setError('Upload failed. Please try again.');
+      const response = await axios.post('/api/ocr', formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      });
+      setData(response.data);
+    } catch (error) {
+      console.error('Error uploading file:', error);
     }
   };
 
   return (
     <div>
-      <input type="file" onChange={handleFileChange} />
+      <input type="file" accept="image/*" onChange={handleFileChange} />
       <button onClick={handleUpload}>Upload</button>
-      {error && <p>{error}</p>}
     </div>
   );
 };
